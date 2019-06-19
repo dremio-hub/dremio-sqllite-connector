@@ -1,0 +1,213 @@
+#
+# Copyright (C) 2017-2018 Dremio Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+metadata:
+  # Manually Configured Metadata Section.
+  name: SQLITE
+  apiname: sqlite
+  spec_version: '1'
+
+syntax:
+  # Manually Configured Syntax Section.
+  identifier_quote: '"'
+  identifier_length_limit: 128
+  allows_boolean_literal: false
+  map_boolean_literal_to_bit: false
+  supports_catalogs: false
+  supports_schemas: false
+
+data_types:
+  mappings:
+  # Manually Configured Data Types Mappings Section.
+  - source:
+      name: "INTEGER"
+    dremio:
+      name: "integer"
+    required_cast_arguments: "none"
+  - source:
+      name: "REAL"
+    dremio:
+      name: "double"
+    required_cast_arguments: "none"
+  - source:
+      name: "VARCHAR"
+    dremio:
+      name: "varchar"
+    required_cast_arguments: "none"
+
+relational_algebra:
+  aggregation:
+    enable: true
+    group_by_ordinal: false
+    distinct: true
+    count_functions:
+      count_star:
+        enable: true
+      count:
+        enable: true
+      count_distinct:
+        enable: true
+    functions:
+    - names:
+      - "avg"
+      signatures:
+      - args:
+        - "double"
+        return: "double"
+      - args:
+        - "integer"
+        return: "double"
+    - names:
+      - "max"
+      - "min"
+      signatures:
+      - args:
+        - "integer"
+        return: "integer"
+      - args:
+        - "double"
+        return: "double"
+      - args:
+        - "varchar"
+        return: "varchar"
+    - names:
+      - "sum"
+      signatures:
+      - args:
+        - "double"
+        return: "double"
+      - args:
+        - "integer"
+        return: "bigint"
+
+  except:
+    enable: false
+  project:
+    enable: true
+  join:
+    enable: true
+    cross:
+      enable: true
+    inner:
+      enable: true
+      inequality: true
+    left:
+      enable: true
+      inequality: true
+    right:
+      enable: false
+      inequality: false
+    full:
+      enable: false
+      inequality: false
+  sort:
+    enable: true
+    order_by:
+      enable: true
+      default_nulls_ordering: high
+    fetch_offset:
+      offset_fetch:
+        enable: true
+        format: 'LIMIT {1} OFFSET {0}'
+      offset_only:
+        enable: false
+      fetch_only:
+        enable: true
+        format: 'LIMIT {0}'
+  union:
+    enable: false
+  union_all:
+    enable: false
+  values:
+    enable: false
+    method: values
+
+# Describe the set of function signatures that are internally supported.
+expressions:
+  subqueries:
+    correlated: true
+    scalar: true
+    in_clause: true
+  supports_case: true
+  supports_over: false
+  operators:
+    - names:
+      - "="
+      - "!="
+      - "<>"
+      - ">"
+      - ">="
+      - "<"
+      - "<="
+      signatures:
+      - args:
+        - "double"
+        - "double"
+        return: "boolean"
+      - args:
+        - "double"
+        - "integer"
+        return: "boolean"
+      - args:
+        - "double"
+        - "varchar"
+        return: "boolean"
+      - args:
+        - "integer"
+        - "double"
+        return: "boolean"
+      - args:
+        - "integer"
+        - "integer"
+        return: "boolean"
+      - args:
+        - "integer"
+        - "varchar"
+        return: "boolean"
+      - args:
+        - "varchar"
+        - "varchar"
+        return: "boolean"
+    - names:
+      - "not"
+      signatures:
+      - args:
+        - "boolean"
+        return: "boolean"
+    # Example scalar function
+    - names:
+      - "sign"
+      signatures:
+      - args:
+        - "double"
+        return: "double"
+      - args:
+        - "integer"
+        return: "integer"
+        # Example rewrite (although this is not necessary here as the default is the same)
+        rewrite: "SIGN({0})"
+
+  variable_length_operators:
+    - names:
+        - and
+      variable_signatures:
+        - return: boolean
+          arg_type: boolean
+    - names:
+        - or
+      variable_signatures:
+        - return: boolean
+          arg_type: boolean
