@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.dremio.plugin</groupId>
-  <version>3.2.4-201906051751050278-1bcce62</version>
+  <version>4.5</version>
   <artifactId>dremio-sqlite-plugin</artifactId>
   <name>Dremio SQLite Community Connector</name>
 
   <properties>
-    <version.dremio>3.2.4-201906051751050278-1bcce62</version.dremio>
+    <version.dremio>4.5.0-202006180205030236-1a5d28da</version.dremio>
   </properties>
 
   <dependencies>
@@ -67,7 +67,6 @@
     <repository>
       <id>dremio-free</id>
       <url>http://maven.dremio.com/free/</url>
-    </repository>    
+    </repository>
   </repositories>
 </project>
-
