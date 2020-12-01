@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.dremio.plugin</groupId>
-  <version>3.2.4-201906051751050278-1bcce62</version>
+  <version>11.0.0-202011171636110752-16ab953d</version>
   <artifactId>dremio-sqlite-plugin</artifactId>
   <name>Dremio SQLite Community Connector</name>
 
   <properties>
-    <version.dremio>3.2.4-201906051751050278-1bcce62</version.dremio>
+    <version.dremio>11.0.0-202011171636110752-16ab953d</version.dremio>
   </properties>
 
   <dependencies>
