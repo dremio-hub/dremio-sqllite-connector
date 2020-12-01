@@ -17,12 +17,13 @@ package com.dremio.exec.store.jdbc.conf;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.dremio.options.OptionManager;
+import com.dremio.security.CredentialsService;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
 import com.dremio.exec.catalog.conf.SourceType;
-import com.dremio.exec.server.SabotContext;
 import com.dremio.exec.store.jdbc.CloseableDataSource;
 import com.dremio.exec.store.jdbc.DataSources;
 import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
@@ -35,7 +36,7 @@ import io.protostuff.Tag;
 /**
  * Configuration for SQLite sources.
  */
-@SourceType(value = "SQLITE", label = "SQLite")
+@SourceType(value = "SQLITE", label = "SQLite", uiConfig = "sqlite-layout.json")
 public class SqliteConf extends AbstractArpConf<SqliteConf> {
   private static final String ARP_FILENAME = "arp/implementation/sqlite-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
@@ -52,6 +53,11 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
   @NotMetadataImpacting
   public int fetchSize = 200;
 
+  @Tag(3)
+  @NotMetadataImpacting
+  @DisplayMetadata(label = ENABLE_EXTERNAL_QUERY_LABEL)
+  public boolean enableExternalQuery = false;
+
   @VisibleForTesting
   public String toJdbcConnectionString() {
     final String database = checkNotNull(this.database, "Missing database.");
@@ -61,13 +67,14 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
 
   @Override
   @VisibleForTesting
-  public Config toPluginConfig(SabotContext context) {
+  public Config toPluginConfig(CredentialsService credentialsService, OptionManager optionManager) {
     return JdbcStoragePlugin.Config.newBuilder()
         .withDialect(getDialect())
         .withFetchSize(fetchSize)
         .withDatasourceFactory(this::newDataSource)
         .clearHiddenSchemas()
         .addHiddenSchema("SYSTEM")
+        .withAllowExternalQuery(enableExternalQuery)
         .build();
   }
 
