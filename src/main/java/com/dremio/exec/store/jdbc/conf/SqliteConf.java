@@ -72,7 +72,6 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
           CredentialsService credentialsService,
           OptionManager optionManager
   ) {
-
     return configBuilder.withDialect(getDialect())
             .withDialect(getDialect())
             .withFetchSize(fetchSize)
