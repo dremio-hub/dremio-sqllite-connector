@@ -29,6 +29,7 @@ import com.dremio.exec.store.jdbc.DataSources;
 import com.dremio.exec.store.jdbc.JdbcPluginConfig;
 import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.annotations.VisibleForTesting;
 
 import io.protostuff.Tag;
@@ -36,7 +37,7 @@ import io.protostuff.Tag;
 /**
  * Configuration for SQLite sources.
  */
-@SourceType(value = "SQLITE", label = "SQLite", uiConfig = "sqlite-layout.json")
+@SourceType(value = "SQLITE", label = "SQLite", uiConfig = "sqlite-layout.json", externalQuerySupported = true)
 public class SqliteConf extends AbstractArpConf<SqliteConf> {
   private static final String ARP_FILENAME = "arp/implementation/sqlite-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
@@ -53,10 +54,25 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
   @NotMetadataImpacting
   public int fetchSize = 200;
 
-  @Tag(3)
+//  If you've written your source prior to Dremio 16, and it allows for external query via a flag like below, you should
+//  mark the flag as @JsonIgnore and remove use of the flag since external query support is now managed by the SourceType
+//  annotation and if the user has been granted the EXTERNAL QUERY permission (enterprise only). Marking the flag as @JsonIgnore
+//  will hide the external query tickbox field, but allow your users to upgrade Dremio without breaking existing source
+//  configurations. An example of how to dummy this out is commented out below.
+//  @Tag(3)
+//  @NotMetadataImpacting
+//  @JsonIgnore
+//  public boolean enableExternalQuery = false;
+
+  @Tag(4)
+  @DisplayMetadata(label = "Maximum idle connections")
   @NotMetadataImpacting
-  @DisplayMetadata(label = ENABLE_EXTERNAL_QUERY_LABEL)
-  public boolean enableExternalQuery = false;
+  public int maxIdleConns = 8;
+
+  @Tag(5)
+  @DisplayMetadata(label = "Connection idle time (s)")
+  @NotMetadataImpacting
+  public int idleTimeSec = 60;
 
   @VisibleForTesting
   public String toJdbcConnectionString() {
@@ -78,13 +94,13 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
             .withDatasourceFactory(this::newDataSource)
             .clearHiddenSchemas()
             .addHiddenSchema("SYSTEM")
-            .withAllowExternalQuery(enableExternalQuery)
             .build();
   }
 
   private CloseableDataSource newDataSource() {
     return DataSources.newGenericConnectionPoolDataSource(DRIVER,
-      toJdbcConnectionString(), null, null, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
+      toJdbcConnectionString(), null, null, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE,
+            maxIdleConns, idleTimeSec);
   }
 
   @Override
