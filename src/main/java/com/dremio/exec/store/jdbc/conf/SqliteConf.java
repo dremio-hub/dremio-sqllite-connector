@@ -17,9 +17,7 @@ package com.dremio.exec.store.jdbc.conf;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.dremio.options.OptionManager;
-import com.dremio.security.CredentialsService;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
@@ -29,6 +27,8 @@ import com.dremio.exec.store.jdbc.DataSources;
 import com.dremio.exec.store.jdbc.JdbcPluginConfig;
 import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
+import com.dremio.options.OptionManager;
+import com.dremio.security.CredentialsService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.annotations.VisibleForTesting;
 
