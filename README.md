@@ -59,4 +59,4 @@ from the template.
 
 ## Adding a SQLite Source in Dremio
 
-Once the connector has been added, log in to Dremio. Inside Dremio, click on the plus sign to add a new data source, and select SQLite from the list of available sources. In the 'New SQLite Source' window enter a name and the SQLite database file and click Save. The database file name can be found by running the command '.databases' in SQLite which will show a list of all databases in the current connection, for example '/home/sqlite/test.db'. 
+Once the connector has been added, log in to Dremio. Inside Dremio, click on the plus sign to add a new data source, and select SQLite from the list of available sources. In the 'New SQLite Source' window enter a name and the name of a SQLite database to connect to and click Save. The database name can be found by running the command '.databases' in SQLite which will show a list of all databases in the current connection, for example '/home/sqlite/test.db'. 
