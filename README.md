@@ -55,3 +55,5 @@ from the template.
 2. Take the resulting .jar file in the target folder and put it in the \dremio\jars folder in Dremio
 3. Take the SQLite JDBC driver from (https://github.com/xerial/sqlite-jdbc) and put in in the \dremio\jars\3rdparty folder
 4. Restart Dremio
+
+To add SQLite as a source in Dremio, enter a name and the SQLite database file to connect to. The latter can be found by running the command '.databases' in SQLite which will show a list of all databases in the current connection, for example '/home/sqlite/test.db'. 
