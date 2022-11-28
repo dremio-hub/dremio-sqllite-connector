@@ -46,7 +46,8 @@ The ARP file is broken down into several sections:
 If an operation or function is not specified in the ARP file, then Dremio will handle the operation itself. Any operations which are indicated as supported but need to be stacked on operations which are not will not be pushed down to the SQL query.
 
 ## SQLite example
-The SQLite example provided here shows and example ARP YAML file for SQLite and the associated files require to build a connector
+
+The SQLite example provided here shows an example ARP YAML file for SQLite and the associated files require to build a connector
 from the template. 
 
 ## Building and Installation
@@ -56,4 +57,6 @@ from the template.
 3. Take the SQLite JDBC driver from (https://github.com/xerial/sqlite-jdbc) and put in in the \dremio\jars\3rdparty folder
 4. Restart Dremio
 
-To add SQLite as a source in Dremio, enter a name and the SQLite database file to connect to. The latter can be found by running the command '.databases' in SQLite which will show a list of all databases in the current connection, for example '/home/sqlite/test.db'. 
+## Adding a SQLite Source in Dremio
+
+To add SQLite as a source in Dremio enter a name and the SQLite database file to connect to in the 'New SQLite Source' window. The database can be found by running the command '.databases' in SQLite which will show a list of all databases in the current connection, for example '/home/sqlite/test.db'. 
