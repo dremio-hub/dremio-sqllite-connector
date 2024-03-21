@@ -26,7 +26,7 @@
   <name>Dremio SQLite Community Connector</name>
 
   <properties>
-    <version.dremio>21.1.1-202204292111390812-57b1832f</version.dremio>
+    <version.dremio>24.3.2-202401241821100032-d2d8a497</version.dremio>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
