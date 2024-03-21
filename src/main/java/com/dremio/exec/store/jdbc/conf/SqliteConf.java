@@ -27,6 +27,7 @@ import com.dremio.exec.store.jdbc.DataSources;
 import com.dremio.exec.store.jdbc.JdbcPluginConfig;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.dremio.options.OptionManager;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.dremio.services.credentials.CredentialsService;
 import com.google.common.annotations.VisibleForTesting;
 
