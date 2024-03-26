@@ -63,11 +63,11 @@
   <repositories>
     <repository>
       <id>dremio-public</id>
-      <url>http://maven.dremio.com/public/</url>
+      <url>https://maven.dremio.com/public/</url>
     </repository>
     <repository>
       <id>dremio-free</id>
-      <url>http://maven.dremio.com/free/</url>
+      <url>https://maven.dremio.com/free/</url>
     </repository>    
   </repositories>
 </project>
